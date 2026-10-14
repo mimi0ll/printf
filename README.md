@@ -1,3 +1,4 @@
+*his activity has been created as part of the 42 curriculum by mhatamle *
 # ft_printf
 
 ## 📖 Description
