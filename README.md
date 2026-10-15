@@ -1,50 +1,49 @@
-*his activity has been created as part of the 42 curriculum by mhatamle*
+*This activity has been created as part of the 42 curriculum by mhatamle*
+
 # ft_printf
 
-## 📖 Description
+## Description
 
-The `ft_printf` project is part of the 42 School curriculum. The goal is to recreate the behavior of the original C `printf()` function.
+The `ft_printf` project is part of the 42 School curriculum. The goal is to recreate the behavior of the standard C `printf()` function.
 
-This project helps develop a better understanding of variadic functions, data types, and output formatting in C.
+This project helps develop a deeper understanding of variadic functions, formatted output, data types, pointers, and memory management in C.
 
-## 🛠️ Supported Conversions
+The program implements a custom `ft_printf()` function that prints formatted text to the standard output and returns the total number of characters printed.
+
+### Supported Conversions
 
 The mandatory part supports the following conversions:
 
 | Conversion | Description |
 |---|---|
-| `%c` | Prints a single character |
-| `%s` | Prints a string |
-| `%p` | Prints a pointer address in hexadecimal |
-| `%d` | Prints a decimal integer |
-| `%i` | Prints an integer |
-| `%u` | Prints an unsigned decimal integer |
-| `%x` | Prints a number in lowercase hexadecimal |
-| `%X` | Prints a number in uppercase hexadecimal |
-| `%%` | Prints a percent sign |
+| `%c` | Prints a single character. |
+| `%s` | Prints a string. |
+| `%p` | Prints a pointer address in hexadecimal format. |
+| `%d` | Prints a decimal integer. |
+| `%i` | Prints an integer. |
+| `%u` | Prints an unsigned decimal integer. |
+| `%x` | Prints a number in lowercase hexadecimal format. |
+| `%X` | Prints a number in uppercase hexadecimal format. |
+| `%%` | Prints a percent sign. |
 
-## 📂 Files
+## Instructions
 
-- `ft_printf.c` — Main function that processes the format string.
-- `ft_printf.h` — Header file containing function prototypes and required includes.
-- `ft_char.c` — Handles character conversion.
-- `ft_string.c` — Handles string conversion.
-- `ft_int.c` — Handles integer conversions (`%d` and `%i`).
-- `ft_unsigned.c` — Handles unsigned integer conversion (`%u`).
-- `ft_pointer.c` — Handles pointer conversion (`%p`).
-- `ft_hex.c` — Handles hexadecimal conversions (`%x` and `%X`).
-- `ft_percent.c` — Handles the percent sign (`%%`).
-- `Makefile` — Compiles the source files into a static library.
+### Compilation
 
-## ⚙️ Compilation
+Clone the repository and enter the project directory:
 
-Compile the project using:
+```bash
+git clone YOUR_REPOSITORY_URL
+cd printf
+```
+
+Compile the project using the Makefile:
 
 ```bash
 make
 ```
 
-This creates the `libftprintf.a` static library.
+This generates the static library `libftprintf.a`.
 
 To remove object files:
 
@@ -52,49 +51,104 @@ To remove object files:
 make clean
 ```
 
-To remove object files and the library:
+To remove object files and the compiled library:
 
 ```bash
 make fclean
 ```
 
-To recompile everything:
+To rebuild the project:
 
 ```bash
 make re
 ```
 
-## 🧪 Usage
+### Usage
 
-Include the header in your C file:
+Include `ft_printf.h` in your C source file and link the static library when compiling.
+
+Example:
 
 ```c
 #include "ft_printf.h"
 
 int main(void)
 {
-    ft_printf("Hello %s!\n", "42");
-    ft_printf("Number: %d\n", 42);
-    ft_printf("Hexadecimal: %x\n", 42);
+    int count;
+
+    count = ft_printf("Hello %s! Number: %d\n", "42", 42);
+    ft_printf("Characters printed: %d\n", count);
     return (0);
 }
 ```
 
-Compile your program with the library:
+Compile the example:
 
 ```bash
-cc main.c -L. -lftprintf
+cc main.c -L. -lftprintf -o test
 ```
 
-## 📚 Concepts Learned
+Run the program:
 
-- Variadic functions: `va_start`, `va_arg`, and `va_end`.
-- Writing output using `write()`.
-- Handling different data types.
-- Using helper functions and modular code.
-- Creating and using a static library.
-- Managing compilation with a Makefile.
+```bash
+./test
+```
 
-## 👩‍💻 Author
+## Algorithm and Data Structure
 
-42 School student.
+### Algorithm
+
+The implementation processes the format string one character at a time.
+
+1. Initialize a variadic argument list using `va_start()`.
+2. Iterate through the format string.
+3. If the current character is not `%`, print it using `write()` and increment the character count.
+4. If the current character is `%`, inspect the following character to identify the conversion specifier.
+5. Dispatch the conversion to its corresponding helper function.
+6. Each helper function retrieves the appropriate argument using `va_arg()`, prints the result, and returns the number of characters printed.
+7. Add the returned count to the total character count.
+8. Finish the variadic argument list using `va_end()` and return the total count.
+
+### Data Structures
+
+The implementation uses the following C types and mechanisms:
+
+- **`va_list`:** Stores the state required to access the variable arguments passed to `ft_printf()`.
+- **Character pointer (`const char *`):** Provides access to the format string.
+- **Integer counters:** Track the current position in the format string and the total number of characters printed.
+- **Helper functions:** Separate conversion logic into manageable functions, such as `ft_char`, `ft_string`, `ft_int`, `ft_unsigned`, `ft_hex`, and `ft_pointer`.
+
+No complex data structures are required because the format string can be processed sequentially without storing the entire output.
+
+### Justification
+
+Processing the format string sequentially makes the implementation straightforward and memory-efficient. Dispatching each conversion to a separate helper function improves readability, modularity, and maintainability.
+
+Using `write()` provides direct output to the standard output, while returning the number of characters printed reproduces an important behavior of the original `printf()` function.
+
+## Resources
+
+The following resources were used to understand the concepts required for this project:
+
+- [42 School](https://42.fr/) — Information about the 42 curriculum.
+- [Linux man pages: printf](https://man7.org/linux/man-pages/man3/printf.3.html) — Reference for formatted output.
+- [Linux man pages: write](https://man7.org/linux/man-pages/man2/write.2.html) — Documentation for the `write()` system call.
+- [Linux man pages: stdarg](https://man7.org/linux/man-pages/man3/stdarg.3.html) — Documentation for variadic argument handling.
+- [GNU C Library: Variadic Functions](https://www.gnu.org/software/libc/manual/html_node/Variadic-Functions.html) — Explanation of variable argument lists.
+- [C Reference](https://en.cppreference.com/w/c/variadic.html) — Reference for variadic functions in C.
+
+### AI Usage
+
+AI tools were used as learning and development support throughout the project.
+
+They helped explain C programming concepts, including variadic functions, pointers, integer conversions, hexadecimal representation, and the behavior of `write()` and `va_arg()`.
+
+AI was also used to support step-by-step debugging, understand compiler errors, review Norminette issues, and improve the organization of helper functions and the Makefile.
+
+The implementation was developed and tested as part of the learning process, with AI explanations used to support understanding rather than replace it.
+
+## Author
+
+**marah hatamleh**
+
+42 School Student
